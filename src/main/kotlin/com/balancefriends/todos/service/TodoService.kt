@@ -3,13 +3,11 @@ package com.balancefriends.todos.service
 import com.balancefriends.todos.dto.TodoFull
 import com.balancefriends.todos.dto.TodoPart
 import com.balancefriends.todos.entity.Todo
+import com.balancefriends.todos.exception.TodoNotFoundException
 import com.balancefriends.todos.repos.TodoRepos
 import org.springframework.data.domain.PageRequest
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.server.ResponseStatusException
-import java.util.*
 import kotlin.streams.toList
 
 @Service
@@ -17,10 +15,12 @@ import kotlin.streams.toList
 class TodoService(
     private val repos: TodoRepos
 ) {
-    fun getTodo(todoId: Long): TodoFull {
-        val todoOpt = getTodoOpt(todoId)
+    companion object {
+        private const val TODO_NOT_FOUND_MESSAGE = "Todo Not Found"
+    }
 
-        return todoOpt.get().toTodoFull()
+    fun getTodo(todoId: Long): TodoFull {
+        return getTodoByTodoId(todoId).toTodoFull()
     }
 
     fun addTodo(name: String, completed: Boolean?): TodoFull {
@@ -32,22 +32,16 @@ class TodoService(
     }
 
     fun updateTodo(todoId: Long, name: String, completed: Boolean?): TodoFull {
-        val todoOpt = getTodoOpt(todoId)
-
-        val todo = todoOpt.get()
+        val todo = getTodoByTodoId(todoId)
         todo.update(name, completed)
-
         return todo.toTodoFull()
     }
 
-    private fun getTodoOpt(todoId: Long): Optional<Todo> {
-        val todoOpt = repos.findById(todoId)
-
-        if (todoOpt.isEmpty) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Todo Not Found")
+    private fun getTodoByTodoId(todoId: Long): Todo {
+        val todo = repos.findById(todoId).orElseThrow {
+            throw TodoNotFoundException(TODO_NOT_FOUND_MESSAGE)
         }
-
-        return todoOpt
+        return todo
     }
 
     fun getTodos(limit: Int?, skip: Int?): List<TodoPart> {

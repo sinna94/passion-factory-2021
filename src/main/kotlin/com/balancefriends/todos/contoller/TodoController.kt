@@ -1,5 +1,6 @@
 package com.balancefriends.todos.contoller
 
+import com.balancefriends.todos.annotaion.NoAuth
 import com.balancefriends.todos.dto.TodoFull
 import com.balancefriends.todos.dto.TodoPart
 import com.balancefriends.todos.dto.TodoRequestBody
@@ -14,6 +15,7 @@ class TodoController(
     private val service: TodoService
 ) {
 
+    @NoAuth
     @GetMapping("{todoId}")
     fun getTodo(
         @PathVariable todoId: Long
@@ -21,6 +23,7 @@ class TodoController(
         return ResponseEntity.ok(service.getTodo(todoId))
     }
 
+    @NoAuth
     @GetMapping
     fun getTodos(
         @RequestParam(required = false) limit: Int?,
