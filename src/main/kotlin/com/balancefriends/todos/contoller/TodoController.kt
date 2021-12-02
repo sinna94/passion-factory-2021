@@ -51,7 +51,7 @@ class TodoController(
     fun updateTodo(
         @PathVariable todoId: Long,
         @RequestBody body: TodoRequestBody
-    ) {
-        service.updateTodo(todoId, body.name, body.completed)
+    ): TodoFull {
+        return service.updateTodo(todoId, body.name, body.completed)
     }
 }

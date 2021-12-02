@@ -20,7 +20,7 @@ class TodoService(
     }
 
     fun getTodo(todoId: Long): TodoFull {
-        return getTodoByTodoId(todoId).toTodoFull()
+        return getTodoByTodoById(todoId).toTodoFull()
     }
 
     fun addTodo(name: String, completed: Boolean?): TodoFull {
@@ -32,12 +32,12 @@ class TodoService(
     }
 
     fun updateTodo(todoId: Long, name: String, completed: Boolean?): TodoFull {
-        val todo = getTodoByTodoId(todoId)
+        val todo = getTodoByTodoById(todoId)
         todo.update(name, completed)
         return todo.toTodoFull()
     }
 
-    private fun getTodoByTodoId(todoId: Long): Todo {
+    private fun getTodoByTodoById(todoId: Long): Todo {
         val todo = repos.findById(todoId).orElseThrow {
             throw TodoNotFoundException(TODO_NOT_FOUND_MESSAGE)
         }
