@@ -21,7 +21,7 @@ jobs:
         run: ./gradlew test
       - name: Deploy Heroku
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-          with:
-            heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-            heroku_app_name: "passion-factory-todo" #Must be unique in Heroku
-            heroku_email: "sinna94@naver.com"
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "passion-factory-todo" #Must be unique in Heroku
+          heroku_email: "sinna94@naver.com"
