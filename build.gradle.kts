@@ -21,10 +21,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.springframework.boot:spring-boot-maven-plugin:2.6.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("io.rest-assured:rest-assured:4.4.0")
     runtimeOnly("com.h2database:h2")
+    testImplementation("io.rest-assured:rest-assured:4.4.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -38,3 +39,6 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+val jar: Jar by tasks
+jar.enabled = false
